@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ここにページのタイトル</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnyCross連携LIFF</title>
+  
+  <link rel="stylesheet" href="style.css">
+  
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  
+  <script src="app.js" defer></script>
 </head>
 <body>
-    <h1>ここに見出し</h1>
-    <p>ここに本文を書きます。</p>
+
+  <h2>AnyCross データ連携</h2>
+  <p id="status-message">LIFF初期化中...</p>
+  
+  <div id="result-box">データがここに表示されます</div>
+
 </body>
 </html>
