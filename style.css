@@ -1,0 +1,24 @@
+/* 基本的なリセットとフォント設定 */
+body { 
+  font-family: sans-serif; 
+  padding: 20px; 
+  background-color: #ffffff;
+  color: #333333;
+}
+
+/* 取得したデータを表示するボックスのスタイル */
+#result-box { 
+  background: #f0f0f0; 
+  padding: 15px; 
+  border-radius: 5px; 
+  white-space: pre-wrap; /* JSONの改行をそのまま表示 */
+  word-wrap: break-word; /* 長い文字列を折り返す */
+  margin-top: 20px;
+  font-family: monospace; /* データ表示用なので等幅フォントに */
+}
+
+/* ステータスメッセージのスタイル（必要に応じて） */
+#status-message {
+  font-weight: bold;
+  color: #0066cc;
+}
