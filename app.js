@@ -1,8 +1,8 @@
 // ==========================================
-// 設定値（自身の環境に合わせて書き換えてください）
+// 設定値
 // ==========================================
-const LIFF_ID = '2010370033-N6k69U5l'; // LINE Developersで発行したLIFF ID
-const GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzACsGXbFTNU578DUOR-_vPz1jr4lO_i5ArVdQ0SPkheBG2KKt4NFJx2FttUYwfkRXsWw/exec'; // GASで発行したウェブアプリURL
+const LIFF_ID = '2010370033-N6k69U5l'; 
+const GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzACsGXbFTNU578DUOR-_vPz1jr4lO_i5ArVdQ0SPkheBG2KKt4NFJx2FttUYwfkRXsWw/exec'; 
 
 // DOM要素の取得
 const statusMessage = document.getElementById('status-message');
@@ -17,10 +17,18 @@ async function initializeApp() {
     
     if (liff.isLoggedIn()) {
       statusMessage.textContent = 'LINE情報取得中...';
-      const profile = await liff.getProfile();
-      fetchAnyCrossData(profile.userId);
+      
+      // ★ 変更点：userIdではなく、GASで検証するための idToken を取得する
+      const idToken = liff.getIDToken();
+      
+      if (idToken) {
+        // トークンが取得できたら自動でAnyCrossデータを取得しにいく
+        fetchAnyCrossData(idToken);
+      } else {
+        throw new Error("IDトークンが取得できませんでした");
+      }
+      
     } else {
-      // 未ログイン状態ならログイン画面へリダイレクト
       liff.login();
     }
   } catch (error) {
@@ -32,29 +40,30 @@ async function initializeApp() {
 
 /**
  * 2. GAS経由でAnyCrossのデータを取得する処理
- * @param {string} userId - 取得したLINEユーザーID
+ * @param {string} idToken - 取得したLINE IDトークン
  */
-async function fetchAnyCrossData(userId) {
+async function fetchAnyCrossData(idToken) {
   statusMessage.textContent = 'AnyCrossデータ取得中...';
 
   try {
-    const response = await fetch(GAS_WEBAPP_URL, {
-      method: 'POST',
-      // GASのCORSエラー回避のため text/plain を指定
-      headers: {
-        'Content-Type': 'text/plain', 
-      },
-      body: JSON.stringify({ userId: userId })
+    // ★ 変更点：GASの doGet() に合わせるため、URLパラメータにセットしてGETリクエストを送る
+    const url = new URL(GAS_WEBAPP_URL);
+    url.searchParams.append('action', 'fetch');
+    url.searchParams.append('idToken', idToken);
+
+    const response = await fetch(url.toString(), {
+      method: 'GET'
     });
 
     const result = await response.json();
 
-    if (result.status === 'success') {
+    if (result.success) {
       statusMessage.textContent = 'データ取得成功！';
-      resultBox.textContent = JSON.stringify(result.data, null, 2);
+      // 取得したシフト情報を表示
+      resultBox.textContent = JSON.stringify(result.shifts, null, 2);
     } else {
       statusMessage.textContent = 'データ取得エラー';
-      resultBox.textContent = `${result.message}\n${JSON.stringify(result.details || '')}`;
+      resultBox.textContent = `${result.message}\n${result.anycrossRaw || ''}`;
       console.error('API Response Error:', result);
     }
 
@@ -68,5 +77,4 @@ async function fetchAnyCrossData(userId) {
 // ==========================================
 // イベントリスナーの登録
 // ==========================================
-// HTMLの読み込みが完了したら initializeApp を実行する
 document.addEventListener('DOMContentLoaded', initializeApp);
