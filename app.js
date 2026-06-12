@@ -170,7 +170,9 @@ function renderShiftForm(shiftDataArray) {
   if (formContainer) {
     formContainer.innerHTML = html;
     // フォームが生成されたら提出ボタンを表示
-    if (submitBtn) submitBtn.style.display = 'block';
+   if (submitBtn) {
+      submitBtn.disabled = false;
+    }
   }
 }
 
