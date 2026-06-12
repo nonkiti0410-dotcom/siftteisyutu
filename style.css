@@ -1,24 +1,78 @@
-/* 基本的なリセットとフォント設定 */
 body { 
   font-family: sans-serif; 
-  padding: 20px; 
-  background-color: #ffffff;
-  color: #333333;
-}
-
-/* 取得したデータを表示するボックスのスタイル */
-#result-box { 
-  background: #f0f0f0; 
   padding: 15px; 
-  border-radius: 5px; 
-  white-space: pre-wrap; /* JSONの改行をそのまま表示 */
-  word-wrap: break-word; /* 長い文字列を折り返す */
-  margin-top: 20px;
-  font-family: monospace; /* データ表示用なので等幅フォントに */
+  background-color: #f8f9fa;
+  color: #333;
 }
 
-/* ステータスメッセージのスタイル（必要に応じて） */
+h2 {
+  font-size: 18px;
+  text-align: center;
+}
+
 #status-message {
+  text-align: center;
   font-weight: bold;
   color: #0066cc;
+  margin-bottom: 20px;
+}
+
+/* シフト表のデザイン */
+.shift-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.shift-table th, .shift-table td {
+  border: 1px solid #ddd;
+  padding: 10px 5px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.shift-table th {
+  background-color: #f1f1f1;
+}
+
+/* 過去・今日の行をグレーアウト */
+.row-disabled {
+  background-color: #f9f9f9;
+  color: #999;
+}
+
+/* プルダウンのデザイン */
+select {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+select:disabled {
+  background-color: #eee;
+  appearance: none; /* スマホで無効化時の見た目をシンプルに */
+}
+/* 既存のCSSの一番下に追加 */
+#submit-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  background-color: #06C755; /* LINEグリーン */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#submit-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
